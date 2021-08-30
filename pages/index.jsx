@@ -36,15 +36,29 @@ const HomePage = (props) => {
 // tam kad puslapis butu sugeneruotas duomenims pasikeitus yra naudojami 2 budai:
 
 // SSR - server side rendering - duomenys sugeneruojami uzklausu metu,ir tinka labiau , kai duomenys kinta kas sekunde ar greiciau.
-// SSG - static side generating - duomenys sugeneruojami aplikacijos sukurimo metu ir atnaujinami jei reikia tam tikru intervalu.
-export function getStaticProps() {
+
+export function getServerSideProps(context) {
   // sitas kodas niekada neatsidurs pas klienta, turi buti butent toks pavadinimas funkcijos,
-  // cia yra lyg ir backend erdve
-  // fetch, validacija ir tt
+  //   // cia yra lyg ir backend erdve
+  const request = context.req;
+  const response = context.res;
   return {
-    props: { meetups: DUMMY_MEETUPS },
-    revalidate: 10, //kas 10 sekundziu duomenys bus atnaujinami
+    props: {
+      meetups: DUMMY_MEETUPS,
+    },
   };
 }
+
+// SSG - static side generating - duomenys sugeneruojami aplikacijos sukurimo metu ir atnaujinami jei reikia tam tikru intervalu.
+
+// export function getStaticProps() {
+//   // sitas kodas niekada neatsidurs pas klienta, turi buti butent toks pavadinimas funkcijos,
+//   // cia yra lyg ir backend erdve
+//   // fetch, validacija ir tt
+//   return {
+//     props: { meetups: DUMMY_MEETUPS },
+//     revalidate: 10, //kas 10 sekundziu duomenys bus atnaujinami
+//   };
+// }
 
 export default HomePage;
