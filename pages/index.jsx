@@ -25,16 +25,10 @@ const DUMMY_MEETUPS = [
   },
 ];
 
-const HomePage = () => {
-  const [meetupsArr, setMeetupsArr] = useState([]);
-
-  useEffect(() => {
-    setMeetupsArr(DUMMY_MEETUPS);
-  }, []);
-
+const HomePage = (props) => {
   return (
     <>
-      <MeetupList meetups={meetupsArr} />
+      <MeetupList meetups={props.meetups} />
     </>
   );
 };
@@ -43,4 +37,14 @@ const HomePage = () => {
 
 // SSR - server side rendering - duomenys sugeneruojami uzklausu metu,ir tinka labiau , kai duomenys kinta kas sekunde ar greiciau.
 // SSG - static side generating - duomenys sugeneruojami aplikacijos sukurimo metu ir atnaujinami jei reikia tam tikru intervalu.
+export function getStaticProps() {
+  // sitas kodas niekada neatsidurs pas klienta, turi buti butent toks pavadinimas funkcijos,
+  // cia yra lyg ir backend erdve
+  // fetch, validacija ir tt
+  return {
+    props: { meetups: DUMMY_MEETUPS },
+    revalidate: 10, //kas 10 sekundziu duomenys bus atnaujinami
+  };
+}
+
 export default HomePage;
