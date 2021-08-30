@@ -1,8 +1,3 @@
-const mongoDbString =
-  'mongodb+srv://andriusAdmin:mongo123@frankfurtclusteraws.9ltyw.mongodb.net/next-meetup?retryWrites=true&w=majority';
-
-module.exports = { mongoDbString };
-
 // /api/new-meetup  tokiu endpoint adresu bus vykdomi fetch
 
 import { MongoClient } from 'mongodb';
@@ -15,19 +10,21 @@ async function handler(req, res) {
   if (req.method === 'POST') {
     const data = req.body;
     console.log({ data });
+    let client;
     try {
-      const client = await MongoClient.connect(mongoDbString);
+      console.log('env', process.env.MONGO_CONN);
+      client = await MongoClient.connect(process.env.MONGO_CONN);
       const db = client.db();
       //sukurti arba nusitaikyti i esama kolekcija
       const meetupCollection = db.collection('meetups');
       const insertResult = await meetupCollection.insertOne(data);
+      console.log(insertResult);
 
       res.status(201).json({ msg: 'success', data });
     } catch (err) {
       res.status(500).json({ error: err });
-      throw new Error(err.message);
     } finally {
-      client.close();
+      client && client.close();
     }
   }
 }

@@ -1,9 +1,12 @@
-import { loadGetInitialProps } from 'next/dist/next-server/lib/utils';
+import axios from 'axios';
 import NewMeetupForm from './../../components/meetups/NewMeetupForm';
 
 const NewMeetup = () => {
-  const addMeetupHandler = (enteredData) => {
+  const addMeetupHandler = async (enteredData) => {
     console.log(enteredData);
+    // send data to api
+    const result = await axios.post('/api/new-meetup', enteredData);
+    console.log(result.data);
   };
 
   return (
