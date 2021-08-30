@@ -1,4 +1,5 @@
 import useRouter from 'next/router';
+
 const MeetupDetails = () => {
   const meetupObj = useRouter();
   return (
