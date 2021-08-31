@@ -40,7 +40,7 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(context) {
   const [meetupCollection, client] = await getCollection();
-  const oneMeet = await meetupCollection.findOne(ObjectId(context.params.meetupId));
+  const oneMeet = await meetupCollection.findOne({ _id: ObjectId(context.params.meetupId) });
   client.close();
 
   return {

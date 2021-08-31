@@ -69,7 +69,7 @@ export async function getStaticProps() {
       description: dbObj.description,
     };
   });
-  console.log(meetsInReqFormat);
+
   return {
     props: {
       meetups: meetsInReqFormat,
