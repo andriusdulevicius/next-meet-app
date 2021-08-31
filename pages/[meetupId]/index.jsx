@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { useRouter } from 'next/router';
 import { getCollection } from '../../utils/mongo-data';
 import MeetupDetail from './../../components/meetups/MeetupDetail';
@@ -19,7 +19,9 @@ const MeetupDetails = (props) => {
 
 // reikalinga funkcija , generuoti statinius puslapius
 export async function getStaticPaths() {
-  const allMeets = await getCollection();
+  const [meetupCollection, client] = await getCollection();
+  const allMeets = await meetupCollection.find({}).toArray();
+  client.close();
 
   const pathsArrOfCurrentMeets = allMeets.map((oneMeet) => {
     return {
@@ -37,21 +39,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(context) {
-  const client = await MongoClient.connect(process.env.MONGO_CONN);
-  const db = client.db();
-  // sukurti arba nusitiaikyti i esama
-  const meetupCollecion = db.collection('meetups');
-  // const oneMeet = await meetupCollecion.findOne(_id === id).toArray();
+  const [meetupCollection, client] = await getCollection();
+  const oneMeet = await meetupCollection.findOne(ObjectId(context.params.meetupId));
   client.close();
 
   return {
     props: {
       meetupData: {
-        // id: context.params.meetupId,
-        // title: 'The first meetup',
-        // image: 'https://picsum.photos/id/1018/1000/800',
-        // address: 'Baker street 10, 1231231, London, GB',
-        // description: 'First meet in London',
+        id: context.params.meetupId,
+        title: oneMeet.title,
+        image: oneMeet.image,
+        address: oneMeet.address,
+        description: oneMeet.description,
       },
       revalidate: 5, //kas kiek sekundziu duomenys bus atnaujinami
     },

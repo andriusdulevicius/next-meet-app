@@ -1,22 +1,15 @@
 // /api/new-meetup  tokiu endpoint adresu bus vykdomi fetch
 
-import { MongoClient } from 'mongodb';
+import { getCollection } from '../../utils/mongo-data';
 
 // cia aprasyti galima passwordus ir kita jautria info , nes cia aprasytas kodas nekeliauja i klientu narsykle
 
 async function handler(req, res) {
   console.log(req.method);
-
+  const data = req.body;
   if (req.method === 'POST') {
-    const data = req.body;
-    console.log({ data });
-    let client;
+    const [meetupCollection, client] = await getCollection();
     try {
-      console.log('env', process.env.MONGO_CONN);
-      client = await MongoClient.connect(process.env.MONGO_CONN);
-      const db = client.db();
-      //sukurti arba nusitaikyti i esama kolekcija
-      const meetupCollection = db.collection('meetups');
       const insertResult = await meetupCollection.insertOne(data);
       console.log(insertResult);
 

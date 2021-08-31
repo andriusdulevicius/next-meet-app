@@ -4,8 +4,7 @@ export async function getCollection() {
   const client = await MongoClient.connect(process.env.MONGO_CONN);
   const db = client.db();
   // sukurti arba nusitiaikyti i esama
-  const meetupCollecion = db.collection('meetups');
-  const allMeets = await meetupCollecion.find({}).toArray();
-  client.close();
-  return allMeets;
+  const meetupCollection = db.collection('meetups');
+  // client.close();
+  return [meetupCollection, client];
 }

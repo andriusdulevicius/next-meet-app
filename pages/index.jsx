@@ -54,7 +54,10 @@ const HomePage = (props) => {
 // SSG - static side generating - duomenys sugeneruojami aplikacijos sukurimo metu ir atnaujinami jei reikia tam tikru intervalu.
 
 export async function getStaticProps() {
-  const allMeets = await getCollection();
+  const [meetupCollection, client] = await getCollection();
+  const allMeets = await meetupCollection.find({}).toArray();
+  client.close();
+
   // console.log(allMeets);
   const meetsInReqFormat = allMeets.map((dbObj) => {
     // _id yra ObjectId ir gausim klaida jei bandysim nuskaityti ji kaip string jsx
