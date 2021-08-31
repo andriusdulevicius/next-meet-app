@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { getCollection } from '../utils/mongo-data';
+
+// Jei importuojama kasnors kas bus naudojama tik backend funkcijoms, tie importai galutiniam variante nefiguruos, kaip ir tos funkcijos
 import MeetupList from './../components/meetups/MeetupList';
 
 const DUMMY_MEETUPS = [
@@ -51,13 +53,25 @@ const HomePage = (props) => {
 
 // SSG - static side generating - duomenys sugeneruojami aplikacijos sukurimo metu ir atnaujinami jei reikia tam tikru intervalu.
 
-export function getStaticProps() {
-  // sitas kodas niekada neatsidurs pas klienta, turi buti butent toks pavadinimas funkcijos,
-  // cia yra lyg ir backend erdve
-  // fetch, validacija ir tt
+export async function getStaticProps() {
+  const allMeets = await getCollection();
+  // console.log(allMeets);
+  const meetsInReqFormat = allMeets.map((dbObj) => {
+    // _id yra ObjectId ir gausim klaida jei bandysim nuskaityti ji kaip string jsx
+    return {
+      id: dbObj._id.toString(),
+      title: dbObj.title,
+      address: dbObj.address,
+      image: dbObj.image,
+      description: dbObj.description,
+    };
+  });
+  console.log(meetsInReqFormat);
   return {
-    props: { meetups: DUMMY_MEETUPS },
-    revalidate: 5, //kas kiek sekundziu duomenys bus atnaujinami
+    props: {
+      meetups: meetsInReqFormat,
+    },
+    revalidate: 2, // kas tiek sek duomenys bus atnaujinami
   };
 }
 

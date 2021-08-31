@@ -1,5 +1,6 @@
 import { MongoClient } from 'mongodb';
 import { useRouter } from 'next/router';
+import { getCollection } from '../../utils/mongo-data';
 import MeetupDetail from './../../components/meetups/MeetupDetail';
 
 const MeetupDetails = (props) => {
@@ -18,13 +19,8 @@ const MeetupDetails = (props) => {
 
 // reikalinga funkcija , generuoti statinius puslapius
 export async function getStaticPaths() {
-  const client = await MongoClient.connect(process.env.MONGO_CONN);
-  const db = client.db();
-  // sukurti arba nusitiaikyti i esama
-  const meetupCollecion = db.collection('meetups');
-  const allMeets = await meetupCollecion.find({}).toArray();
-  client.close();
-  console.log('All meeets transformed ============');
+  const allMeets = await getCollection();
+
   const pathsArrOfCurrentMeets = allMeets.map((oneMeet) => {
     return {
       params: {
@@ -45,9 +41,8 @@ export async function getStaticProps(context) {
   const db = client.db();
   // sukurti arba nusitiaikyti i esama
   const meetupCollecion = db.collection('meetups');
-  const allMeets = await meetupCollecion.find({}).toArray();
+  // const oneMeet = await meetupCollecion.findOne(_id === id).toArray();
   client.close();
-  allMeets;
 
   return {
     props: {
