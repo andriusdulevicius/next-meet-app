@@ -41,7 +41,8 @@ export async function getStaticPaths() {
   console.log(pathsArrOfCurrentMeets);
 
   return {
-    fallback: false, //einant i psl kurio nera aprasyta paths, puslapis sugeneruojams uzklausos metu(at run time), jei false - tai nesant pathui nuves i 404
+    fallback: 'blocking', //einant i psl kurio nera aprasyta paths, puslapis sugeneruojams uzklausos metu(at run time), jei false - tai nesant pathui nuves i 404
+    //blocking: palauks kol gaus visus duomenis, ir tada tik generuos puslapi (veikia panasiai kaip ir true, tik palaukia duomenu)
     paths: pathsArrOfCurrentMeets,
   };
 }

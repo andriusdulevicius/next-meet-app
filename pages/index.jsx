@@ -2,7 +2,7 @@
 import { getCollection } from '../utils/mongo-data';
 import MeetupList from './../components/meetups/MeetupList';
 import Head from 'next/head';
-import { SITE_NAME } from '../../config';
+import { SITE_NAME } from '../config';
 
 const DUMMY_MEETUPS = [
   {
@@ -80,7 +80,7 @@ export async function getStaticProps() {
     props: {
       meetups: meetsInReqFormat,
     },
-    revalidate: 2, // kas tiek sek duomenys bus atnaujinami
+    revalidate: 1, // kas tiek sek duomenys bus atnaujinami
   };
 }
 
