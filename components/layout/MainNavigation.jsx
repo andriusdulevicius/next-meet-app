@@ -1,10 +1,11 @@
 import classes from './MainNavigation.module.css';
 import Link from 'next/link';
+import { SITE_NAME } from '../../config';
 
 function MainNavigation() {
   return (
     <header className={classes.header}>
-      <div className={classes.logo}>React Meetups</div>
+      <div className={classes.logo}>{SITE_NAME}</div>
       <nav>
         <ul>
           <li>

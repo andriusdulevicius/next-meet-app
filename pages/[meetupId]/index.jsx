@@ -2,11 +2,19 @@ import { ObjectId } from 'mongodb';
 import { useRouter } from 'next/router';
 import { getCollection } from '../../utils/mongo-data';
 import MeetupDetail from './../../components/meetups/MeetupDetail';
+import Head from 'next/head';
+import { SITE_NAME } from '../../config';
 
 const MeetupDetails = (props) => {
   const meetupObj = useRouter();
   return (
     <>
+      <Head>
+        <title>
+          {props.meetupData.title} - {SITE_NAME}
+        </title>
+        <meta name='description' content={props.meetupData.description} />
+      </Head>
       <MeetupDetail
         title={props.meetupData.title}
         image={props.meetupData.image}

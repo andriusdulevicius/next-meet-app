@@ -1,7 +1,8 @@
-import { getCollection } from '../utils/mongo-data';
-
 // Jei importuojama kasnors kas bus naudojama tik backend funkcijoms, tie importai galutiniam variante nefiguruos, kaip ir tos funkcijos
+import { getCollection } from '../utils/mongo-data';
 import MeetupList from './../components/meetups/MeetupList';
+import Head from 'next/head';
+import { SITE_NAME } from '../../config';
 
 const DUMMY_MEETUPS = [
   {
@@ -28,8 +29,13 @@ const DUMMY_MEETUPS = [
 ];
 
 const HomePage = (props) => {
+  // title All meetups - React Meetup
   return (
     <>
+      <Head>
+        <title>All Meetups - {SITE_NAME}</title>
+        <meta name='description' content='Browse meetups around the world' />
+      </Head>
       <MeetupList meetups={props.meetups} />
     </>
   );
